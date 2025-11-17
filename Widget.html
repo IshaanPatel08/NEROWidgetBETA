@@ -1,0 +1,805 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NERO Chain Micro-Tip Widget</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .demo-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 700px;
+            width: 100%;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .demo-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .demo-header h1 {
+            color: #1a1a2e;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+            background: linear-gradient(135deg, #e94560, #f27121);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .demo-header p {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .network-status {
+            background: linear-gradient(135deg, #e94560, #f27121);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(233, 69, 96, 0.3);
+        }
+
+        .blog-post {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-left: 4px solid #e94560;
+        }
+
+        .blog-post h2 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .blog-post p {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .tip-widget {
+            display: inline-flex;
+            align-items: center;
+            background: linear-gradient(135deg, #e94560, #f27121);
+            border-radius: 50px;
+            padding: 10px 24px;
+            color: white;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(233, 69, 96, 0.4);
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tip-widget:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(233, 69, 96, 0.6);
+        }
+
+        .tip-widget:active {
+            transform: translateY(0);
+        }
+
+        .tip-widget::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .tip-widget:hover::before {
+            left: 100%;
+        }
+
+        .tip-icon {
+            margin-right: 8px;
+            font-size: 18px;
+        }
+
+        .tip-amount {
+            margin-left: 8px;
+            background: rgba(255,255,255,0.25);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .wallet-status {
+            background: #e3f2fd;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid #2196f3;
+            transition: all 0.3s ease;
+        }
+
+        .wallet-status.connected {
+            background: linear-gradient(135deg, #e8f5e8, #f1f8e9);
+            border-left-color: #4caf50;
+        }
+
+        .wallet-status.error {
+            background: linear-gradient(135deg, #ffebee, #fce4ec);
+            border-left-color: #f44336;
+        }
+
+        .connect-button {
+            background: linear-gradient(135deg, #2196f3, #21cbf3);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .connect-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(33, 150, 243, 0.4);
+        }
+
+        .connect-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .tip-options {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .tip-option {
+            background: #f0f0f0;
+            border: 2px solid #ddd;
+            padding: 10px 18px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .tip-option:hover {
+            background: #e94560;
+            color: white;
+            border-color: #e94560;
+            transform: translateY(-2px);
+        }
+
+        .tip-option.selected {
+            background: #e94560;
+            color: white;
+            border-color: #e94560;
+            box-shadow: 0 4px 15px rgba(233, 69, 96, 0.3);
+        }
+
+        .transaction-log {
+            background: linear-gradient(135deg, #f8f9fa, #ffffff);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+            max-height: 250px;
+            overflow-y: auto;
+            border: 1px solid #e0e0e0;
+        }
+
+        .transaction-log h3 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .transaction-item {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            border-left: 4px solid #4caf50;
+            font-size: 14px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .transaction-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+
+        .loading {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #e94560;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .debug-info {
+            background: linear-gradient(135deg, #2d3748, #1a202c);
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            border: 1px solid #4a5568;
+        }
+
+        .paymaster-badge {
+            display: inline-flex;
+            align-items: center;
+            background: linear-gradient(135deg, #4caf50, #8bc34a);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 10px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .network-switch-btn {
+            background: linear-gradient(135deg, #ff9800, #f57c00);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .network-switch-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 152, 0, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <div class="demo-header">
+            <h1>🚀 NERO Chain Micro-Tip Widget</h1>
+            <p>Gasless micro-transactions powered by NERO's revolutionary paymaster</p>
+        </div>
+
+        <div class="network-status" id="networkStatus">
+            <span id="networkText">🔗 Connecting to NERO Chain...</span>
+            <button class="network-switch-btn" id="switchNetworkBtn" onclick="switchToNeroChain()" style="display: none;">
+                Switch to NERO
+            </button>
+        </div>
+
+        <div class="wallet-status" id="walletStatus">
+            <strong>Wallet Status:</strong> <span id="statusText">Checking for MetaMask...</span>
+            <div id="walletInfo"></div>
+            <button class="connect-button" id="connectButton" onclick="connectWallet()">Connect MetaMask</button>
+        </div>
+
+        <div class="blog-post">
+            <h2>📝 Revolutionary Micro-Tipping Demo</h2>
+            <p>This widget demonstrates NERO Chain's groundbreaking paymaster technology. Unlike traditional blockchains where every transaction costs gas fees (often $1-50), NERO's paymaster sponsors small transactions automatically!</p>
+            <p><strong>Why this is revolutionary:</strong> Micro-tips of $0.10-$1.00 become viable because the paymaster covers gas costs. This unlocks entirely new economic models for content creators, developers, and digital services.</p>
+            
+            <div style="margin-top: 25px;">
+                <button class="tip-widget" onclick="showTipOptions()">
+                    <span class="tip-icon">💰</span>
+                    Tip the Author
+                    <span class="tip-amount" id="selectedAmount">0.001 ETH</span>
+                </button>
+                <span class="paymaster-badge" id="paymasterBadge">✨ Gas-Free Zone!</span>
+            </div>
+
+            <div class="tip-options" id="tipOptions" style="display: none;">
+                <div class="tip-option selected" onclick="selectTipAmount(0.001)">0.001 ETH</div>
+                <div class="tip-option" onclick="selectTipAmount(0.005)">0.005 ETH</div>
+                <div class="tip-option" onclick="selectTipAmount(0.01)">0.01 ETH</div>
+                <div class="tip-option" onclick="selectTipAmount(0.02)">0.02 ETH</div>
+                <div class="tip-option" onclick="selectTipAmount(0.05)">0.05 ETH</div>
+                <button class="tip-widget" onclick="sendTip()" style="margin-left: 10px;">
+                    <span id="sendTipText">Send Tip</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="transaction-log" id="transactionLog">
+            <h3>📋 Transaction History</h3>
+            <div id="transactionList">
+                <p style="color: #666; font-style: italic;">No transactions yet. Connect your wallet and send a tip to see the paymaster in action!</p>
+            </div>
+        </div>
+
+        <div class="debug-info" id="debugInfo">
+            <strong>🔍 NERO Chain Debug Information:</strong><br>
+            <span id="debugText">Initializing NERO Chain connection...</span>
+        </div>
+    </div>
+
+    <script>
+        let web3;
+        let userAccount;
+        let selectedTipAmount = 0.001;
+        let currentChainId;
+        
+        // NERO Chain configuration (you'll need to get these from NERO docs)
+        const NERO_CHAIN_CONFIG = {
+            chainId: '0x4e454', // This is a placeholder - get actual NERO testnet chain ID
+            chainName: 'NERO Chain Testnet',
+            nativeCurrency: {
+                name: 'NERO',
+                symbol: 'NERO',
+                decimals: 18
+            },
+            rpcUrls: ['https://testnet-rpc.nerochain.io'], // Placeholder URL
+            blockExplorerUrls: ['https://testnet-explorer.nerochain.io']
+        };
+
+        // Fallback to Sepolia for development if NERO not available
+        const SEPOLIA_CONFIG = {
+            chainId: '0xaa36a7',
+            chainName: 'Sepolia Test Network',
+            nativeCurrency: {
+                name: 'SepoliaETH',
+                symbol: 'ETH',
+                decimals: 18
+            },
+            rpcUrls: ['https://sepolia.infura.io/v3/'],
+            blockExplorerUrls: ['https://sepolia.etherscan.io']
+        };
+
+        // Your address as recipient
+        const RECIPIENT_ADDRESS = '0x742d35Cc6634C0532925a3b8D9c8AC23D4bE4c7b';
+        
+        // Paymaster threshold - tips below this are sponsored
+        const PAYMASTER_THRESHOLD = 0.02;
+
+        function updateDebugInfo() {
+            const debugText = document.getElementById('debugText');
+            debugText.innerHTML = `
+                MetaMask Present: ${!!window.ethereum}<br>
+                Current Chain: ${currentChainId || 'Not connected'}<br>
+                Connected Account: ${userAccount ? `${userAccount.substring(0, 6)}...${userAccount.substring(38)}` : 'None'}<br>
+                Paymaster Threshold: ${PAYMASTER_THRESHOLD} ETH<br>
+                Selected Tip: ${selectedTipAmount} ETH (${selectedTipAmount <= PAYMASTER_THRESHOLD ? 'SPONSORED' : 'PAYS GAS'})<br>
+                Timestamp: ${new Date().toLocaleTimeString()}
+            `;
+        }
+
+        async function switchToNeroChain() {
+            try {
+                // First try to switch to NERO Chain
+                await window.ethereum.request({
+                    method: 'wallet_switchEthereumChain',
+                    params: [{ chainId: NERO_CHAIN_CONFIG.chainId }],
+                });
+            } catch (switchError) {
+                // If NERO Chain is not added, try to add it
+                if (switchError.code === 4902) {
+                    try {
+                        await window.ethereum.request({
+                            method: 'wallet_addEthereumChain',
+                            params: [NERO_CHAIN_CONFIG],
+                        });
+                        logTransaction('🎉 NERO Chain added to MetaMask!', 'success');
+                    } catch (addError) {
+                        logTransaction('❌ Failed to add NERO Chain. Using Sepolia for development.', 'error');
+                        // Fallback to Sepolia
+                        await switchToSepolia();
+                    }
+                } else {
+                    logTransaction('❌ Network switch failed. Using current network.', 'error');
+                }
+            }
+        }
+
+        async function switchToSepolia() {
+            try {
+                await window.ethereum.request({
+                    method: 'wallet_switchEthereumChain',
+                    params: [{ chainId: SEPOLIA_CONFIG.chainId }],
+                });
+            } catch (error) {
+                logTransaction('❌ Failed to switch to Sepolia', 'error');
+            }
+        }
+
+        async function connectWallet() {
+            const connectButton = document.getElementById('connectButton');
+            const statusText = document.getElementById('statusText');
+            const walletInfo = document.getElementById('walletInfo');
+            const walletStatus = document.getElementById('walletStatus');
+
+            try {
+                if (!window.ethereum) {
+                    throw new Error('MetaMask is not installed. Please install MetaMask extension.');
+                }
+
+                connectButton.innerHTML = '<div class="loading"></div>Connecting...';
+                connectButton.disabled = true;
+
+                // Request account access
+                const accounts = await window.ethereum.request({
+                    method: 'eth_requestAccounts'
+                });
+
+                userAccount = accounts[0];
+                web3 = window.ethereum;
+
+                // Get current chain ID
+                currentChainId = await window.ethereum.request({ method: 'eth_chainId' });
+                
+                // Get balance
+                const balance = await window.ethereum.request({
+                    method: 'eth_getBalance',
+                    params: [userAccount, 'latest']
+                });
+
+                const balanceInEth = parseInt(balance, 16) / Math.pow(10, 18);
+
+                // Check if we're on the right network
+                updateNetworkStatus();
+
+                // Update UI
+                statusText.textContent = 'Connected to MetaMask';
+                walletInfo.innerHTML = `
+                    <div style="margin-top: 10px; font-size: 14px;">
+                        <strong>Address:</strong> ${userAccount.substring(0, 6)}...${userAccount.substring(38)}<br>
+                        <strong>Balance:</strong> ${balanceInEth.toFixed(4)} ETH<br>
+                        <strong>Network:</strong> Chain ID ${currentChainId}
+                    </div>
+                `;
+                walletStatus.className = 'wallet-status connected';
+                connectButton.style.display = 'none';
+
+                logTransaction('✅ Wallet connected successfully!', 'success');
+                updateDebugInfo();
+
+            } catch (error) {
+                console.error('Connection failed:', error);
+                statusText.textContent = 'Connection failed';
+                walletStatus.className = 'wallet-status error';
+                walletInfo.innerHTML = `
+                    <div style="margin-top: 10px; color: #d32f2f;">
+                        <strong>Error:</strong> ${error.message}
+                    </div>
+                `;
+                connectButton.innerHTML = 'Retry Connection';
+                connectButton.disabled = false;
+                
+                logTransaction(`❌ Connection failed: ${error.message}`, 'error');
+            }
+        }
+
+        function updateNetworkStatus() {
+            const networkStatus = document.getElementById('networkStatus');
+            const networkText = document.getElementById('networkText');
+            const switchBtn = document.getElementById('switchNetworkBtn');
+
+            if (currentChainId === NERO_CHAIN_CONFIG.chainId) {
+                networkText.textContent = '🟢 Connected to NERO Chain Testnet';
+                networkStatus.style.background = 'linear-gradient(135deg, #4caf50, #8bc34a)';
+                switchBtn.style.display = 'none';
+            } else if (currentChainId === SEPOLIA_CONFIG.chainId) {
+                networkText.textContent = '🟡 Connected to Sepolia (Development Mode)';
+                networkStatus.style.background = 'linear-gradient(135deg, #ff9800, #f57c00)';
+                switchBtn.style.display = 'inline-block';
+                switchBtn.textContent = 'Switch to NERO';
+            } else {
+                networkText.textContent = '🔴 Wrong Network - Please switch to NERO Chain';
+                networkStatus.style.background = 'linear-gradient(135deg, #f44336, #d32f2f)';
+                switchBtn.style.display = 'inline-block';
+                switchBtn.textContent = 'Switch to NERO';
+            }
+        }
+
+        function showTipOptions() {
+            const tipOptions = document.getElementById('tipOptions');
+            tipOptions.style.display = tipOptions.style.display === 'none' ? 'flex' : 'none';
+        }
+
+        function selectTipAmount(amount) {
+            selectedTipAmount = amount;
+            document.getElementById('selectedAmount').textContent = `${amount} ETH`;
+            
+            // Update paymaster badge
+            const badge = document.getElementById('paymasterBadge');
+            if (amount <= PAYMASTER_THRESHOLD) {
+                badge.textContent = '✨ Gas-Free Zone!';
+                badge.style.background = 'linear-gradient(135deg, #4caf50, #8bc34a)';
+            } else {
+                badge.textContent = '⚡ User Pays Gas';
+                badge.style.background = 'linear-gradient(135deg, #ff9800, #f57c00)';
+            }
+            
+            document.querySelectorAll('.tip-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            event.target.classList.add('selected');
+
+            updateDebugInfo();
+        }
+
+        async function sendTip() {
+            if (!userAccount) {
+                alert('Please connect your wallet first');
+                return;
+            }
+
+            const sendButton = document.getElementById('sendTipText');
+            const originalText = sendButton.textContent;
+
+            try {
+                sendButton.innerHTML = '<div class="loading"></div>Sending...';
+
+                const amountInWei = '0x' + (selectedTipAmount * Math.pow(10, 18)).toString(16);
+
+                const transactionParams = {
+                    to: RECIPIENT_ADDRESS,
+                    from: userAccount,
+                    value: amountInWei,
+                    gas: '0x5208', // Standard ETH transfer gas limit
+                };
+
+                const isSponsored = selectedTipAmount <= PAYMASTER_THRESHOLD;
+                
+                if (isSponsored) {
+                    logTransaction(`🎉 This ${selectedTipAmount} ETH tip will be sponsored by NERO paymaster!`, 'info');
+                }
+
+                // Here's where you'd integrate with NERO's actual paymaster API
+                // For now, we'll simulate the transaction
+                if (currentChainId === NERO_CHAIN_CONFIG.chainId) {
+                    logTransaction('🚀 Using NERO Chain paymaster system...', 'info');
+                }
+
+                const txHash = await window.ethereum.request({
+                    method: 'eth_sendTransaction',
+                    params: [transactionParams]
+                });
+
+                logTransaction(`✅ Tip sent successfully! ${selectedTipAmount} ETH`, 'success');
+                logTransaction(`🔗 Transaction Hash: ${txHash.substring(0, 10)}...${txHash.substring(56)}`, 'info');
+
+                if (isSponsored) {
+                    logTransaction(`💝 Gas fees sponsored by NERO paymaster - User paid $0 in fees!`, 'success');
+                } else {
+                    logTransaction(`⚡ User paid gas fees (tip exceeds ${PAYMASTER_THRESHOLD} ETH threshold)`, 'info');
+                }
+
+                document.getElementById('tipOptions').style.display = 'none';
+
+            } catch (error) {
+                console.error('Transaction failed:', error);
+                logTransaction(`❌ Transaction failed: ${error.message}`, 'error');
+            } finally {
+                sendButton.textContent = originalText;
+            }
+        }
+
+        function logTransaction(message, type) {
+            const transactionList = document.getElementById('transactionList');
+            
+            if (transactionList.innerHTML.includes('No transactions yet')) {
+                transactionList.innerHTML = '';
+            }
+
+            const transactionItem = document.createElement('div');
+            transactionItem.className = 'transaction-item';
+            
+            const timestamp = new Date().toLocaleTimeString();
+            transactionItem.innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span>${message}</span>
+                    <small style="color: #666;">${timestamp}</small>
+                </div>
+            `;
+
+            if (type === 'error') {
+                transactionItem.style.borderLeftColor = '#f44336';
+            } else if (type === 'success') {
+                transactionItem.style.borderLeftColor = '#4caf50';
+            } else if (type === 'info') {
+                transactionItem.style.borderLeftColor = '#2196f3';
+            }
+
+            transactionList.insertBefore(transactionItem, transactionList.firstChild);
+        }
+
+        // Initialize on page load
+        window.addEventListener('load', () => {
+            updateDebugInfo();
+            
+            setTimeout(() => {
+                const statusText = document.getElementById('statusText');
+                const connectButton = document.getElementById('connectButton');
+                
+                if (window.ethereum) {
+                    statusText.textContent = 'MetaMask detected - Ready to connect';
+                    connectButton.disabled = false;
+                } else {
+                    statusText.textContent = 'MetaMask not found - Please install MetaMask';
+                    connectButton.textContent = 'Install MetaMask';
+                    connectButton.onclick = () => window.open('https://metamask.io/download/', '_blank');
+                }
+                
+                updateDebugInfo();
+            }, 1000);
+        });
+
+        // Listen for MetaMask events
+        if (window.ethereum) {
+            window.ethereum.on('accountsChanged', (accounts) => {
+                if (accounts.length === 0) {
+                    location.reload();
+                } else {
+                    connectWallet();
+                }
+            });
+
+            window.ethereum.on('chainChanged', (chainId) => {
+                currentChainId = chainId;
+                updateNetworkStatus();
+                updateDebugInfo();
+                logTransaction(`🔄 Network changed to Chain ID: ${chainId}`, 'info');
+            });
+        }
+
+        // Auto-update debug info every 5 seconds
+        setInterval(updateDebugInfo, 5000);
+    </script>
+</body>
+</html> -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
+<script src="work.js"></script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NERO Chain Micro-Tip Widget</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="demo-container">
+        <div class="demo-header">
+            <h1>🚀 NERO Chain Micro-Tip Widget</h1>
+            <p>Gasless micro-transactions powered by NERO's revolutionary paymaster</p>
+        </div>
+
+        <div class="network-status" id="networkStatus">
+            <span id="networkText">🔗 Connecting to NERO Chain...</span>
+            <button class="network-switch-btn" id="switchNetworkBtn" onclick="switchToNeroChain()" style="display: none;">
+                Switch to NERO
+            </button>
+        </div>
+
+        <div class="wallet-status" id="walletStatus">
+            <strong>Wallet Status:</strong> <span id="statusText">Checking for MetaMask...</span>
+            <div id="walletInfo"></div>
+            <button class="connect-button" id="connectButton" onclick="connectWallet()">Connect MetaMask</button>
+        </div>
+
+        <div class="blog-post">
+            <h2>📝 Revolutionary Micro-Tipping Demo</h2>
+            <p>This widget demonstrates NERO Chain's groundbreaking paymaster technology. Unlike traditional blockchains where every transaction costs gas fees (often $1-50), NERO's paymaster sponsors small transactions automatically!</p>
+            <p><strong>Why this is revolutionary:</strong> Micro-tips of $0.10-$1.00 become viable because the paymaster covers gas costs. This unlocks entirely new economic models for content creators, developers, and digital services.</p>
+            
+            <div style="margin-top: 25px;">
+                <button class="tip-widget" onclick="showTipOptions()">
+                    <span class="tip-icon">💰</span>
+                    Tip the Author
+                    <span class="tip-amount" id="selectedAmount">0.001 ETH</span>
+                </button>
+                <span class="paymaster-badge" id="paymasterBadge">✨ Gas-Free Zone!</span>
+            </div>
+
+            <div class="tip-options" id="tipOptions" style="display: none;">
+                <div class="tip-option selected" onclick="selectTipAmount(0.001)">0.001 ETH</div>
+                <div class="tip-option" onclick="selectTipAmount(0.005)">0.005 ETH</div>
+                <div class="tip-option" onclick="selectTipAmount(0.01)">0.01 ETH</div>
+                <div class="tip-option" onclick="selectTipAmount(0.02)">0.02 ETH</div>
+                <div class="tip-option" onclick="selectTipAmount(0.05)">0.05 ETH</div>
+                <div>
+                    <input type="number" class="custom-tip-input" placeholder="Custom amount" step="0.001" min="0.001" max="1" id="customTipInput">
+                    <button class="tip-option" onclick="setCustomTip()">Set Custom</button>
+                </div>
+                <button class="tip-widget" onclick="sendTip()" style="margin-left: 10px;">
+                    <span id="sendTipText">Send Tip</span>
+                </button>
+            </div>
+
+            <div class="gas-estimate" id="gasEstimate" style="display: none;">
+                <strong>⛽ Gas Estimate:</strong> <span id="gasEstimateText">Calculating...</span>
+                <div class="gas-savings" id="gasSavings" style="display: none;">
+                    💰 You're saving approximately <span id="savingsAmount">$0.00</span> in gas fees!
+                </div>
+            </div>
+        </div>
+
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-number" id="totalTips">0</div>
+                <div class="stat-label">Total Tips Sent</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalValue">0.000</div>
+                <div class="stat-label">Total ETH Tipped</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="gasSaved">$0.00</div>
+                <div class="stat-label">Gas Fees Saved</div>
+            </div>
+        </div>
+
+        <div class="transaction-log" id="transactionLog">
+            <h3>📋 Transaction History</h3>
+            <div id="transactionList">
+                <p style="color: #666; font-style: italic;">No transactions yet. Connect your wallet and send a tip to see the paymaster in action!</p>
+            </div>
+        </div>
+
+        <div class="debug-info" id="debugInfo">
+            <strong>🔍 NERO Chain Debug Information:</strong><br>
+            <span id="debugText">Initializing NERO Chain connection...</span>
+        </div>
+    </div>
+</body>
+</html>
