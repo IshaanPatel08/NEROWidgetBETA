@@ -705,7 +705,7 @@
         setInterval(updateDebugInfo, 5000);
     </script>
 </body>
-</html> -->
+</html> 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
 <script src="work.js"></script>
@@ -802,4 +802,4 @@
         </div>
     </div>
 </body>
-</html>
+</html>-->
